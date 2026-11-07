@@ -142,7 +142,7 @@ class MainActivity : Activity() {
             orientation = LinearLayout.VERTICAL
             setPadding(dp(16), dp(16), dp(16), dp(24))
         }
-        racine.addView(texte("Centrale Pêche", 24f, cTx, true))
+        racine.addView(texte("Centrale Pêche v2", 24f, cTx, true))
         racine.addView(texte("Écoute des 3 détecteurs", 14f, cMut))
 
         // Bandeau d'alarme
