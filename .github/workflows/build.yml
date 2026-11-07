@@ -5,6 +5,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Ranger les fichiers
+        run: |
+          mkdir -p app/src/main/java/fr/peche/centrale
+          cp AlarmService.kt MainActivity.kt app/src/main/java/fr/peche/centrale/
+          cp AndroidManifest.xml app/src/main/AndroidManifest.xml
+          cp app-build.gradle.kts app/build.gradle.kts
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
