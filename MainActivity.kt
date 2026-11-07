@@ -93,7 +93,7 @@ class MainActivity : Activity() {
                 tvConn.text = "Surveillance arrêtée"; tvConn.setTextColor(cMut)
             } else if (p == 0L) {
                 tvConn.text = "En attente de la centrale…"; tvConn.setTextColor(cMut)
-            } else if (age > 30 && AlarmService.armed) {
+            } else if (age > 30) {
                 tvConn.text = "Centrale injoignable (vue il y a $age s)"; tvConn.setTextColor(cAlarm)
             } else {
                 tvConn.text = "Centrale connectée · il y a $age s"; tvConn.setTextColor(cOk)

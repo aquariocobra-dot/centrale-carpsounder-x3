@@ -57,20 +57,24 @@ class AlarmService : Service() {
             .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "centrale:wl").apply { acquire() }
         running = true
         Thread {
-            try {
-                server = ServerSocket(PORT)
-                while (running) {
+            while (running) {
+                try {
+                    if (server == null || server!!.isClosed) server = ServerSocket(PORT, 50)
                     val s = server!!.accept()
                     Thread { handle(s) }.start()
+                } catch (e: Exception) {
+                    try { server?.close() } catch (x: Exception) { }
+                    server = null
+                    try { Thread.sleep(1000) } catch (x: Exception) { }
                 }
-            } catch (e: Exception) { }
+            }
         }.start()
         Thread {
             while (running) {
                 try { Thread.sleep(5000) } catch (e: Exception) { }
                 val p = lastPing
                 if (armed && p > 0 && System.currentTimeMillis() - p > 30000) {
-                    if (!lostAlerted) { lostAlerted = true; alarm("Centrale injoignable !") }
+                    if (!lostAlerted) { lostAlerted = true; try { alarm("Centrale injoignable !") } catch (e: Exception) { } }
                 } else lostAlerted = false
             }
         }.start()
@@ -101,7 +105,7 @@ class AlarmService : Service() {
             }
         } catch (e: Exception) {
         } finally { try { s.close() } catch (e: Exception) { } }
-        if (c > 0) touche(c, n)
+        if (c > 0) try { touche(c, n) } catch (e: Exception) { }
     }
 
     // Un bip par impulsion : la cadence des bips suit celle des touches
